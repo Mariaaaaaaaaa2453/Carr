@@ -1,118 +1,112 @@
 #include <iostream>
+#include <string>
+
 using namespace std;
 
-class Car {
-
-	string brand;
-	string model;
-	string color;
-	int year;
+// Base class for vehicles
+class Vehicle {
+protected:
+    string brand;
+    string model;
+    string paintColor;
+    int yearOfManufacture;
 
 public:
+    Vehicle(string brand = "Generic", string model = "Basic", string color = "White", int year = 2000)
+        : brand(brand), model(model), paintColor(color), yearOfManufacture(year) {}
 
-	Car()
-	{
-		brand = "";
-		model = "";
-		color = "";
-		year = 2000;
-	}
+    // Setters and getters for vehicle properties
+    void setBrand(const string& b) {
+        brand = b;
+    }
 
-	Car(string b, string m, string c, int y) :brand(b), model(m), color(c), year(y) {};
+    string getBrand() const {
+        return brand;
+    }
 
-	void SetBrand(string b)
-	{
-		brand = b;
-	}
+    void setModel(const string& m) {
+        model = m;
+    }
 
-	string GetBrand()
-	{
-		return brand;
-	}
+    string getModel() const {
+        return model;
+    }
 
-	void SetModel(string m)
-	{
-		model = m;
-	}
+    void setColor(const string& c) {
+        paintColor = c;
+    }
 
-	string GetModel()
-	{
-		return model;
-	}
+    string getColor() const {
+        return paintColor;
+    }
 
-	void SetColor(string c)
-	{
-		color = c;
-	}
+    void setYear(int y) {
+        yearOfManufacture = y;
+    }
 
-	string GetColor()
-	{
-		return color;
-	}
-
-	void SetYear(int y)
-	{
-		year = y;
-	}
-
-	int GetYear()
-	{
-		return year;
-	}
-
+    int getYear() const {
+        return yearOfManufacture;
+    }
 };
 
-class CarPrinter
-{
-	Car* car;
-public:
-	CarPrinter(Car* car) :car(car) {};
+// Utility class for outputting vehicle details
+class VehicleReporter {
+private:
+    const Vehicle* vehicle;
 
-	void PrintInfo()
-	{
-		cout << "Brand: " << car->GetBrand() << "\n" << "Model:" << car->GetModel() << "\n" << "Color:" << car->GetColor() << "\n" << "Year:" << car->GetYear() << "\n\n";
-	}
+public:
+    VehicleReporter(const Vehicle* v) : vehicle(v) {}
+
+    void report() const {
+        cout << "Vehicle Information:" << endl;
+        cout << "Brand: " << vehicle->getBrand() << endl;
+        cout << "Model: " << vehicle->getModel() << endl;
+        cout << "Color: " << vehicle->getColor() << endl;
+        cout << "Year: " << vehicle->getYear() << endl;
+    }
 };
 
-class CarInputter {
-	Car* car;
+// Utility class for user input to configure vehicle details
+class VehicleConfigurer {
+private:
+    Vehicle* vehicle;
 
 public:
-	CarInputter(Car* car) :car(car) {};
+    VehicleConfigurer(Vehicle* v) : vehicle(v) {}
 
-	void InputInfo() {
-		string brand, model, color;
-		int year;
+    void configure() {
+        cout << "Configure your vehicle:" << endl;
+        string input;
+        int year;
 
-		cout << "Enter brand: ";
-		cin >> brand;
-		car->SetBrand(brand);
+        cout << "Enter brand: ";
+        getline(cin, input);
+        vehicle->setBrand(input);
 
-		cout << "Enter model: ";
-		cin >> model;
-		car->SetModel(model);
+        cout << "Enter model: ";
+        getline(cin, input);
+        vehicle->setModel(input);
 
-		cout << "Enter color: ";
-		cin >> color;
-		car->SetColor(color);
+        cout << "Enter color: ";
+        getline(cin, input);
+        vehicle->setColor(input);
 
-		cout << "Enter year: ";
-		cin >> year;
-		car->SetYear(year);
-	}
+        cout << "Enter year: ";
+        cin >> year;
+        vehicle->setYear(year);
+    }
 };
 
 int main() {
-	Car car("BMW", "X5", "black", 2019);
+    Vehicle myCar("Tesla", "Model S", "Red", 2022);  // Default vehicle setup
 
-	CarPrinter carPrinter(&car);
-	carPrinter.PrintInfo();
+    VehicleReporter reporter(&myCar);
+    reporter.report();  // Initial report
 
-	CarInputter carInputter(&car);
-	carInputter.InputInfo();
+    VehicleConfigurer configurer(&myCar);
+    configurer.configure();  // User input to modify vehicle details
 
-	carPrinter.PrintInfo();
+    reporter.report();  // Report after modifications
 
-
-	return 0;
+    return 0;
 }
